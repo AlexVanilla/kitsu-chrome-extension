@@ -21,5 +21,5 @@ Though I do have a couple roadmap features I want to implement when I find time
 * clean up code
 
 ## Other notes
-Using [Kitsu Api](https://kitsu.docs.apiary.io/)
-Utilzing React and Bootstrap
+* Using [Kitsu Api](https://kitsu.docs.apiary.io/)
+* Utilzing React and Bootstrap
