@@ -19,3 +19,7 @@ Though I do have a couple roadmap features I want to implement when I find time
 * Take out bootstrap and implement my one stylesheet (preferably SCSS I wanna pick up a CSS preprocessor)
 * Have drop box to filter just anime or manga in the list
 * clean up code
+
+## Other notes
+Using [Kitsu Api](https://kitsu.docs.apiary.io/)
+Utilzing React and Bootstrap
