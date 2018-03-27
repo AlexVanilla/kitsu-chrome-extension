@@ -1,0 +1,20 @@
+{
+  "short_name": "Kitsu Extension",
+  "name": "Kitsu Chrome Extension",
+  "description": "Tracks your Kitsu watch list",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_popup": "index.html",
+    "default_title": "Kitsu Extension"
+  },
+  "version": "0.4",
+  "permissions": [
+    "storage",
+    "cookies",
+    "*://kitsu.io/*",
+    "https://kitsu.io/*",
+    "https://kitsu.io/api/edge/*",
+    "https://kitsu.io/api/oath",
+    "https://kitsu.io/api/oath/token"
+  ]
+}
