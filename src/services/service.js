@@ -73,7 +73,7 @@ function setToken(token) {
 export function getList() {
     // return axios.get(`${baseApiUrl}edge/users/${userId}/library-entries?filter[status]=current&include=anime,manga`)
     // TODO: rely on chrome.storage
-    return axios.get(`${baseApiUrl}edge/users/<userId>/library-entries?filter[status]=current&include=anime,manga`, headers)
+    return axios.get(`${baseApiUrl}edge/users/64982/library-entries?filter[status]=current&include=anime,manga`, headers)
         .then(response => response.data)
         .catch(onError);
 }

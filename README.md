@@ -16,6 +16,7 @@ Though I do have a couple roadmap features I want to implement when I find time
 
 * Have login component redirect to my watchlist component
 * Implement caching to store users information
+* Implement search feature
 * Take out bootstrap and implement own stylesheet (preferably SCSS I wanna pick up a CSS preprocessor)
 * Have drop box to filter just anime or manga in the list
 * clean up code
