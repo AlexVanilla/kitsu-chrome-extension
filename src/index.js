@@ -1,18 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+// import App from './App';
+import './css/index.css';
 
-// import registerServiceWorker from './registerServiceWorker';
-import { MemoryRouter } from 'react-router';
-import Watchlist from './views/Watchlist';
-// import { config as dotenvConfig } from 'dotenv';
-
-// const result = dotenvConfig();
-// if (result.error){
-//     throw result.error
-// }
-// console.log(result.parsed)
+// import { MemoryRouter } from 'react-router';
+// import Watchlist from './views/Watchlist';
+// import Login from './views/Login';
+import Test from './views/test';
 
 // import './css/bootstrap.min.css'
 // import './js/bootstrap.bundle.min'
@@ -25,5 +19,6 @@ import Watchlist from './views/Watchlist';
 // >
 //     <App />
 // </MemoryRouter>, document.getElementById('root'));
-ReactDOM.render(<Watchlist /> , document.getElementById('root'));
-registerServiceWorker();
+// ReactDOM.render(<Watchlist /> , document.getElementById('root'));
+// ReactDOM.render(<Login /> , document.getElementById('root'));
+ReactDOM.render(<Test /> , document.getElementById('root'));

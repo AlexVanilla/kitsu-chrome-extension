@@ -6,8 +6,8 @@ have user choose b/w getting just anime or just manga or all
 */
 import React, { PureComponent } from 'react';
 import { getList, getAnime, getManga, getChromeStorageItem, increment, decrement, onError } from '../services/service.js';
-import '../css/bootstrap.min.css';
-import '../css/Watchlist.css';
+// import '../css/bootstrap.min.css';
+// import '../css/Watchlist.css';
 
 export default class Watchlist extends PureComponent {
     constructor(props, context) {
@@ -23,6 +23,7 @@ export default class Watchlist extends PureComponent {
     }
 
     componentDidMount() {
+        console.log("i go off?")
         // TODO: Token needs to be refreshed but by default it expires every 30 days (not sure if I have to refresh it they can just login again)
         /*
         window.setInterval(() => {
