@@ -23,7 +23,6 @@ export default class Watchlist extends PureComponent {
     }
 
     componentDidMount() {
-        console.log("i go off?")
         // TODO: Token needs to be refreshed but by default it expires every 30 days (not sure if I have to refresh it they can just login again)
         /*
         window.setInterval(() => {
@@ -118,6 +117,12 @@ export default class Watchlist extends PureComponent {
 
 
     }
+
+    erase() {
+        chrome.storage.sync.set({ 'userId': null }, function () {
+            console.log('test erased')
+        })
+    }
     render() {
         if (this.state.userEntries === null || this.state.userEntries.length === 0) { return null }
         else {
@@ -151,6 +156,7 @@ export default class Watchlist extends PureComponent {
 
             return (
                 <div className="flex-container" style={{ width: '300px' }}>
+                    <button onClick={this.erase} type="button">erase</button>
                     <div className="row">
                         <h1 className="col-12">Watch list</h1>
                     </div>

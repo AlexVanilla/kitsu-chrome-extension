@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import App from './App';
+import App from './views/app';
 import './css/index.css';
 
 // import { MemoryRouter } from 'react-router';
 // import Watchlist from './views/Watchlist';
-// import Login from './views/Login';
-import Test from './views/test';
+// import Login from './views/login';
 
 // import './css/bootstrap.min.css'
 // import './js/bootstrap.bundle.min'
@@ -21,4 +20,4 @@ import Test from './views/test';
 // </MemoryRouter>, document.getElementById('root'));
 // ReactDOM.render(<Watchlist /> , document.getElementById('root'));
 // ReactDOM.render(<Login /> , document.getElementById('root'));
-ReactDOM.render(<Test /> , document.getElementById('root'));
+ReactDOM.render(<App /> , document.getElementById('root'));
