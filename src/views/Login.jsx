@@ -1,15 +1,25 @@
 /* global chrome */
 import React, { PureComponent } from 'react';
 import { Route, Redirect, Switch } from 'react-router'
-import { login, setToken, getChromeStorageItem } from '../services/service.js';
+import login from '../services/service.js';
 
 export default class Login extends PureComponent {
-  state = {
-    formData: {
-      username: "",
-      password: ""
-    },
+  constructor() {
+    super();
+
+    this.handlePasswordInputChange = this.handlePasswordInputChange.bind(this);
+    this.handleUsernameInputChange = this.handleUsernameInputChange.bind(this);
+    this.login = this.login.bind(this);
+    this.test = this.test.bind(this);
+
+    this.state = {
+      formData: {
+        username: "",
+        password: ""
+      },
+    }
   }
+
 
   handleUsernameInputChange(event) {
     const value = event.target.value;
@@ -23,17 +33,19 @@ export default class Login extends PureComponent {
     const value = event.target.value;
     const newFormData = { ...this.state.formData }
     newFormData.password = value;
-
     this.setState({ formData: newFormData })
   }
 
-  submit() {
-    chrome.storage.sync.set({ 'userId': true }, function () {
+  test() {
+    chrome.storage.sync.set({ 'userId': process.env.USER_ID }, function () {
       console.log("userId invoked");
     })
+  }
 
+  login() {
     login(this.state.formData)
       .then(response => {
+        console.log('success!', response);
         chrome.storage.sync.set({
           loggedIn: response
         }, () => {
@@ -55,7 +67,8 @@ export default class Login extends PureComponent {
             <input onChange={this.handlePasswordInputChange} className="form-control" type="password" placeholder="Password" />
           </div>
           <div>
-            <button onClick={this.submit} className="btn btn-primary" type="button">Login</button>
+            <button onClick={this.login} className="btn btn-primary" type="button">Login</button>
+            <button onClick={this.test} className="btn btn-primary" type="button">Bypass Login</button>
           </div>
         </form>
       </div>

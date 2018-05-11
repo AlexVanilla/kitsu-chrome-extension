@@ -4,7 +4,7 @@ import Watchlist from './watchlist';
 import '../css/style.css';
 
 export default class App extends PureComponent {
-    constructor(props) {
+    constructor() {
         super();
 
         this.state = {
@@ -13,15 +13,17 @@ export default class App extends PureComponent {
     }
 
     componentDidMount() {
-        chrome.storage.sync.get(['userId'], result => {
+        // After mounting, set the userId from storage onto state object
+        chrome.storage.sync.get(result => {
             this.setState({ userId: result.userId })
         });
     }
 
     render() {
-        console.log(this.state.userId);
+        console.log('app render', this.state.userId)
         let component = this.state.userId ? (<Watchlist />) : (<Login />)
 
+        // TODO: implement flexbox container
         return (
             <div>
                 {component}
