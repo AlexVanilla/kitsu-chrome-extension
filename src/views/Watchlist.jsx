@@ -1,10 +1,20 @@
 /* TODO:
+implement loader icon
 clear chrome.storage (have some leftover code stored)
 make interface
 have user choose b/w getting just anime or just manga or all
+
+
+TODO:
+get library entry
+make a button that will bring a modal
+populate response to form
 */
+
+
 import React, { PureComponent } from 'react';
 import { getList, updateProgress, onError } from '../services/service.js';
+// import { test } from '../shared/test.gif'
 
 export default class Watchlist extends PureComponent {
     constructor(props, context) {
@@ -16,6 +26,7 @@ export default class Watchlist extends PureComponent {
         this.state = {
             // TODO: possibly store this in chrome.storage to avoid GET calls   
             userEntries: [],
+            loading: true
         }
     }
 
@@ -49,7 +60,8 @@ export default class Watchlist extends PureComponent {
 
                 this.setState({
                     userEntries: newData,
-                    entriesProgress: newEntriesProgress
+                    entriesProgress: newEntriesProgress,
+                    loading: false
                 });
             })
             .catch(error => {
@@ -104,6 +116,12 @@ export default class Watchlist extends PureComponent {
             .catch(onError)
     }
 
+    logout() {
+        chrome.storage.sync.set({ userId: null}, () => {
+            console.log('logged out worked');
+        })
+    }
+
     render() {
         if (this.state.userEntries === null || this.state.userEntries.length === 0) { return null }
         else {
@@ -137,7 +155,7 @@ export default class Watchlist extends PureComponent {
 
             return (
                 <div className="flex-container" style={{ width: '300px' }}>
-                    <button onClick={this.erase} type="button">Logout</button>
+                    <button onClick={this.logout} type="button">Logout</button>
                     <div className="row">
                         <h1 className="col-12">Watch list</h1>
                     </div>

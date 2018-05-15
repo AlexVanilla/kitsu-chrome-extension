@@ -1,4 +1,25 @@
 /* global chrome */
+/* NOTE: data.attributes for updating progress
+data = {
+    attributes: {
+        createdAt: "2018-03-10T16:22:18.681Z",
+        finishedAt: "2018-05-11T21:35:06.734Z",
+        notes: "Overall it was a nice series.  Wish they delved more with more of the characters and I wished some relationships progressed more.",
+        private: false,
+        progress: 12,
+        progressedAt: "2018-05-12T02:07:32.036Z",
+        rating: "3.5",
+        ratingTwenty: 14,
+        reactionSkipped: "unskipped",
+        reconsumeCount: 0,
+        reconsuming: false,
+        startedAt: "2018-03-11T08:45:02.693Z",
+        status: "completed",
+        updatedAt: "2018-05-12T02:07:32.036Z",
+        volumesOwned: 0
+    }
+}
+*/
 "use strict"
 
 import axios from 'axios';
@@ -39,7 +60,9 @@ export function updateProgress(id, payload) {
 }
 
 function _updateProgressCallback(id, safePayload, headers) {
-    return axios.patch(`${baseApiUrl}edge/library-entries/${id}`, safePayload, { headers: headers })
+    return axios.patch(`${baseApiUrl}edge/library-entries/${id}`, safePayload, {
+            headers: headers
+        })
         .then(response => response)
         .catch(onError)
 }
@@ -66,7 +89,10 @@ export function login(payload) {
                 .then(result => {
                     let newUserId = result.data.data[0].id;
 
-                    chrome.storage.sync.set({ headers: headers, userId: newUserId }, () => {
+                    chrome.storage.sync.set({
+                        headers: headers,
+                        userId: newUserId
+                    }, () => {
                         chrome.storage.sync.get(result => {
                             console.log(result);
                         });

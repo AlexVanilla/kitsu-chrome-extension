@@ -31,10 +31,5 @@ module.exports = {
     plugins: [
         new Dotenv(),
         new ChromeExtensionReloader(),
-        // FIXME: can't find index.html
-        // new HtmlWebpackPlugin({
-        //     template: './src/index.html',
-        //     filename: './index.html'
-        // })
     ]
 };
