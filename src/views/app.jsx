@@ -25,7 +25,7 @@ export default class App extends PureComponent {
 
         // TODO: implement flexbox container
         return (
-            <div>
+            <div className="app-componentPadding">
                 {component}
             </div>
         )
