@@ -22,10 +22,12 @@ export default class Watchlist extends PureComponent {
 
         this.incrementProgress = this.incrementProgress.bind(this);
         this.decrementProgress = this.decrementProgress.bind(this);
+        this.search = this.search.bind(this);
 
         this.state = {
             // TODO: possibly store this in chrome.storage to avoid GET calls   
             userEntries: [],
+            searchResults: [],
             loading: true
         }
     }
@@ -117,10 +119,34 @@ export default class Watchlist extends PureComponent {
     }
 
     logout() {
-        chrome.storage.sync.set({ userId: null}, () => {
+        chrome.storage.sync.set({ userId: null }, () => {
             console.log('logged out worked');
         })
     }
+
+    search() {
+        // TODO: GET https://kitsu.io/api/edge/anime?filter[text]=afro
+        /*
+        {
+            "data": [
+                {
+                    "id": "1165",
+                    "type": "anime",
+                    "links": {
+                        "self": "https://kitsu.io/api/edge/anime/1165"
+                    },
+                    "attributes": {
+                        "createdAt": "2013-02-20T16:18:44.268Z", 
+                        "updatedAt": "2018-05-16T00:17:11.522Z", 
+                        "slug": "afro-samurai", 
+                        "synopsis": "When he was a young boy, Afro witnessed his father be cut down in a duel at the hands of a man known only as Justice. After ...,
+                        "posterImage": {
+
+                        }
+
+                        */
+    }
+
 
     render() {
         if (this.state.userEntries === null || this.state.userEntries.length === 0) { return null }
@@ -155,7 +181,11 @@ export default class Watchlist extends PureComponent {
 
             return (
                 <div className="flex-container" style={{ width: '300px' }}>
+                    <i className="fas fa-search"></i>
+                    <i className="fas fa-user"></i>
                     <button onClick={this.logout} type="button">Logout</button>
+                    <input type="text" placeholder="Search" />
+                    <button>test<i className="fas fa-search"></i></button>
                     <div className="row">
                         <h1 className="col-12">Watch list</h1>
                     </div>
