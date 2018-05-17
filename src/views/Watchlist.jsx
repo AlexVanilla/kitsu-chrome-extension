@@ -160,19 +160,15 @@ export default class Watchlist extends PureComponent {
                 let entryType = entry.included.type;
 
                 return (
-                    <div key={entry.id} className="row bg-light" style={{ marginBottom: '20px', width: '100%' }}>
-                        <div className="col-sm-3">
+                    <div key={entry.id} className="flex-containerRow" style={{ marginBottom: '10px', width: '100%' }}>
+                        <div>
                             <img alt="thumbnail" className="img-thumbnail" src={includedAttributes.posterImage.medium} height={85} width={60} />
+                            {/* TODO: finish links to redirect to kitsu site */}
                         </div>
-                        <div className="col-sm-5">
-                            <h6>
-                                {/* TODO: finish links to redirect to kitsu site */}
-                                <a href={`https://kitsu.io/${entryType}/${includedAttributes.slug}`}>{includedAttributes.canonicalTitle}</a>
-                            </h6>
-                            <div>
-                                <button onClick={() => { this.incrementProgress(entry.id, entry.attributes.progress, index) }}>+</button>
-                                <button onClick={() => { this.decrementProgress(entry.id, entry.attributes.progress, index) }}>-</button>
-                            </div>
+                        <div className="watchList-progressColumn">
+                            <p className="watchList-title" href={`https://kitsu.io/${entryType}/${includedAttributes.slug}`}>{includedAttributes.canonicalTitle}</p>
+                            <button className="watchList-progress" onClick={() => { this.decrementProgress(entry.id, entry.attributes.progress, index) }}>-</button>
+                            <button className="watchList-progress" onClick={() => { this.incrementProgress(entry.id, entry.attributes.progress, index) }}>+</button>
                             <span>{entryType === "anime" ? "Ep." : "Ch."} {this.state.entriesProgress[index]}</span>
                         </div>
                     </div>
@@ -183,14 +179,14 @@ export default class Watchlist extends PureComponent {
                 <div className="flex-container" style={{ width: '300px' }}>
                     <i className="fas fa-search"></i>
                     <i className="fas fa-user"></i>
-                    <button onClick={this.logout} type="button">Logout</button>
+                    <button className="watchList-logout" onClick={this.logout} type="button">Logout</button>
                     <input type="text" placeholder="Search" />
                     <button>test<i className="fas fa-search"></i></button>
-                    <div className="row">
-                        <h1 className="col-12">Watch list</h1>
+                    <div>
+                        <h1>Watch list</h1>
                     </div>
-                    <div className="row">
-                        <div className="template-container flex-container col-12">
+                    <div>
+                        <div className="template-container flex-container">
                             {entryRows}
                         </div>
                     </div>

@@ -6,3 +6,49 @@
     display: flex;
     flex-direction: column;
 }
+
+.flex-containerRow {
+    display: flex;
+    flex-direction: row;
+    border-top: 1px solid #f6f6f6;
+    padding-top: 3%;
+}
+
+.app-componentPadding {
+    padding: 2%;
+}
+
+.watchList-logout {
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.watchList-progress {
+    border: 1px solid transparent;
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+    border-radius: .25rem;
+    margin-right: 5px;
+}
+
+.watchList-progressColumn {
+    margin-left: 3%;
+    margin-top: -17px;
+}
+
+.watchList-title {
+    font-size: 14px;
+    font-weight: bold;
+    left: 20%;
+}
