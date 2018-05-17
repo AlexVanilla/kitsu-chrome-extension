@@ -11,6 +11,10 @@ make a button that will bring a modal
 populate response to form
 */
 
+/* FIXME:
+prevent user from exiting out of extension while in middle of PATCH request
+*/
+
 
 import React, { PureComponent } from 'react';
 import { getList, updateProgress, onError } from '../services/service.js';
@@ -22,6 +26,7 @@ export default class Watchlist extends PureComponent {
 
         this.incrementProgress = this.incrementProgress.bind(this);
         this.decrementProgress = this.decrementProgress.bind(this);
+        this.showModal = this.showModal.bind(this);
         this.search = this.search.bind(this);
 
         this.state = {
@@ -73,7 +78,7 @@ export default class Watchlist extends PureComponent {
     } // end of componentDidMount()
 
     incrementProgress(id, progress, index) {
-        updateProgress(id, {
+        const payload = {
             "data": {
                 "id": `${id}`,
                 "type": "libraryEntries",
@@ -81,7 +86,9 @@ export default class Watchlist extends PureComponent {
                     "progress": progress += 1
                 }
             }
-        })
+        }
+
+        updateProgress(id, payload)
             .then(() => {
                 this.setState(prevState => {
                     let newEntriesProgress = [...prevState.entriesProgress];
@@ -97,7 +104,7 @@ export default class Watchlist extends PureComponent {
     }
 
     decrementProgress(id, progress, index) {
-        updateProgress(id, {
+        const payload = {
             "data": {
                 "id": `${id}`,
                 "type": "libraryEntries",
@@ -105,7 +112,9 @@ export default class Watchlist extends PureComponent {
                     "progress": progress -= 1
                 }
             }
-        })
+        };
+
+        updateProgress(id, payload)
             .then(() => {
                 this.setState(prevState => {
                     let newEntriesProgress = [...prevState.entriesProgress];
@@ -125,7 +134,9 @@ export default class Watchlist extends PureComponent {
     }
 
     search() {
+        console.log('search fired');
         // TODO: GET https://kitsu.io/api/edge/anime?filter[text]=afro
+
         /*
         {
             "data": [
@@ -147,11 +158,13 @@ export default class Watchlist extends PureComponent {
                         */
     }
 
+    showModal() {
+        console.log('TODO: create modal function')
+    }
 
     render() {
         if (this.state.userEntries === null || this.state.userEntries.length === 0) { return null }
         else {
-            let test = this.state.userEntries.slice()
             // TODO: have default img and name
             // TODO: add url slug
             let entryRows = this.state.userEntries.map((entry, index) => {
@@ -170,6 +183,9 @@ export default class Watchlist extends PureComponent {
                             <button className="watchList-progress" onClick={() => { this.decrementProgress(entry.id, entry.attributes.progress, index) }}>-</button>
                             <button className="watchList-progress" onClick={() => { this.incrementProgress(entry.id, entry.attributes.progress, index) }}>+</button>
                             <span>{entryType === "anime" ? "Ep." : "Ch."} {this.state.entriesProgress[index]}</span>
+                            <p onClick={this.showModal}>
+                                <i className="fas fa-edit"></i> Edit Entry
+                            </p>
                         </div>
                     </div>
                 )
@@ -177,14 +193,22 @@ export default class Watchlist extends PureComponent {
 
             return (
                 <div className="flex-container" style={{ width: '300px' }}>
-                    <i className="fas fa-search"></i>
-                    <i className="fas fa-user"></i>
-                    <button className="watchList-logout" onClick={this.logout} type="button">Logout</button>
-                    <input type="text" placeholder="Search" />
-                    <button>test<i className="fas fa-search"></i></button>
-                    <div>
-                        <h1>Watch list</h1>
+                    <div className="flex-container-row">
+                        <select>
+                            <option value="anime">Anime</option>
+                            <option value="manga">Manga</option>
+                        </select>
+                        <button className="" type="button">Settings</button>
+                        <button className="watchList-logout" onClick={this.logout} type="button">Logout</button>
                     </div>
+                    <br/>
+                    <div className="search-bar">
+                        <label htmlFor="search"><i className="fas fa-search"></i></label>
+                        <input onChange={this.search} type="text" placeholder="Search" />
+                    </div>
+
+                    <h1>Watch list</h1>
+
                     <div>
                         <div className="template-container flex-container">
                             {entryRows}
