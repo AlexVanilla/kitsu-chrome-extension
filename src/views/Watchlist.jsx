@@ -17,7 +17,7 @@ prevent user from exiting out of extension while in middle of PATCH request
 
 
 import React, { PureComponent } from 'react';
-import { getList, updateProgress, onError } from '../services/service.js';
+import { search, getList, updateProgress, onError } from '../services/service.js';
 // import { test } from '../shared/test.gif'
 
 export default class Watchlist extends PureComponent {
@@ -38,6 +38,7 @@ export default class Watchlist extends PureComponent {
     }
 
     componentDidMount() {
+        // NOTE: this.state gets reset every time user exits out of extension
         getList()
             .then(result => {
                 // Need additional information for the anime and manga
@@ -75,6 +76,7 @@ export default class Watchlist extends PureComponent {
                 console.error('error getting list', error);
                 chrome.storage.sync.set({ userId: null });
             })
+
     } // end of componentDidMount()
 
     incrementProgress(id, progress, index) {
@@ -133,8 +135,18 @@ export default class Watchlist extends PureComponent {
         })
     }
 
-    search() {
-        console.log('search fired');
+    search(event) {
+        const input = event.target.value;
+        if (input) {
+            setTimeout(function() {
+                console.log('delayed search fired')
+            }.bind(this), 2000);
+            // console.log('search fired', input);
+
+            // setTimeout(search(input), 3000)
+        }
+
+
         // TODO: GET https://kitsu.io/api/edge/anime?filter[text]=afro
 
         /*
@@ -195,13 +207,14 @@ export default class Watchlist extends PureComponent {
                 <div className="flex-container" style={{ width: '300px' }}>
                     <div className="flex-container-row">
                         <select>
+                            <option value="anime,manga">Both</option>
                             <option value="anime">Anime</option>
                             <option value="manga">Manga</option>
                         </select>
                         <button className="" type="button">Settings</button>
                         <button className="watchList-logout" onClick={this.logout} type="button">Logout</button>
                     </div>
-                    <br/>
+                    <br />
                     <div className="search-bar">
                         <label htmlFor="search"><i className="fas fa-search"></i></label>
                         <input onChange={this.search} type="text" placeholder="Search" />
