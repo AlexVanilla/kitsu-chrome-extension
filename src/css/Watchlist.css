@@ -28,7 +28,7 @@
   margin: 10px;
 }
 
-.flex-container {
+.flex-col-container {
   display: flex;
   flex-direction: column;
   align-items: center;

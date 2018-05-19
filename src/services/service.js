@@ -27,7 +27,12 @@ import axios from 'axios';
 const baseApiUrl = "https://kitsu.io/api/";
 
 // NOTE: filters: [status]=current,planned,onHold,dropped
+
 // Adding new series to library entry
+// search GET https://kitsu.io/api/edge/anime?filter[text]=gun%20gale%20online
+
+// get animeId
+
 // POST to https://kitsu.io/api/edge/library-entries
 /*var payload: {
     "data": {
@@ -51,6 +56,22 @@ const baseApiUrl = "https://kitsu.io/api/";
         "type": "library-entries"
     }
 }*/
+
+// updating library entry 
+
+/* PATCH payload
+{
+    "data": {
+        "attributes": {
+            "progress": "2"
+        },
+        "id": "25993558",
+        "type": "libraryEntries"
+    }
+}*/
+
+
+
 
 export function search(input) {
     return new Promise((resolve, reject) => {

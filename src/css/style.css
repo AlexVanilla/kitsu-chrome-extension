@@ -1,4 +1,6 @@
 body {
+    height: auto;
+    width: 300px;
     display: flex;    
     justify-content: center;
     display: -ms-flexbox;

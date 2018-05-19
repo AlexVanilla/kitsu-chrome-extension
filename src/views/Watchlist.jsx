@@ -18,6 +18,9 @@ prevent user from exiting out of extension while in middle of PATCH request
 
 import React, { PureComponent } from 'react';
 import { search, getList, updateProgress, onError } from '../services/service.js';
+import debounce from 'lodash.debounce';
+import _ from 'lodash';
+import SearchBar from '../shared/searchBar';
 // import { test } from '../shared/test.gif'
 
 export default class Watchlist extends PureComponent {
@@ -28,6 +31,7 @@ export default class Watchlist extends PureComponent {
         this.decrementProgress = this.decrementProgress.bind(this);
         this.showModal = this.showModal.bind(this);
         this.search = this.search.bind(this);
+        this.test = this.test.bind(this);
 
         this.state = {
             // TODO: possibly store this in chrome.storage to avoid GET calls   
@@ -135,12 +139,23 @@ export default class Watchlist extends PureComponent {
         })
     }
 
-    search(event) {
-        const input = event.target.value;
-        if (input) {
-            setTimeout(function() {
-                console.log('delayed search fired')
-            }.bind(this), 2000);
+    test() {
+        console.log('debounce test');
+    }
+
+    search(searchInput) {
+        if (searchInput) {
+            console.log('search fired');
+
+            // _.debounce(() => { this.test() }, 200);
+
+            // debounce(function() {
+            //     console.log('debounce search fired')
+            // }, 2000);
+
+            // setTimeout(function() {
+            //     console.log('delayed search fired')
+            // }.bind(this), 2000);
             // console.log('search fired', input);
 
             // setTimeout(search(input), 3000)
@@ -177,6 +192,10 @@ export default class Watchlist extends PureComponent {
     render() {
         if (this.state.userEntries === null || this.state.userEntries.length === 0) { return null }
         else {
+            const search = _.debounce(searchInput => {
+                this.search(searchInput)
+            }, 500);
+
             // TODO: have default img and name
             // TODO: add url slug
             let entryRows = this.state.userEntries.map((entry, index) => {
@@ -204,7 +223,7 @@ export default class Watchlist extends PureComponent {
             });
 
             return (
-                <div className="flex-container" style={{ width: '300px' }}>
+                <div className="flex-container">
                     <div className="flex-container-row">
                         <select>
                             <option value="anime,manga">Both</option>
@@ -215,11 +234,7 @@ export default class Watchlist extends PureComponent {
                         <button className="watchList-logout" onClick={this.logout} type="button">Logout</button>
                     </div>
                     <br />
-                    <div className="search-bar">
-                        <label htmlFor="search"><i className="fas fa-search"></i></label>
-                        <input onChange={this.search} type="text" placeholder="Search" />
-                    </div>
-
+                    <SearchBar onSearchTermChange={search} />
                     <h1>Watch list</h1>
 
                     <div>
