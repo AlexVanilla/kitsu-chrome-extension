@@ -141,6 +141,10 @@ export default class Watchlist extends PureComponent {
     search(searchInput) {
         if (searchInput) {
             console.log('search fired');
+            search(searchInput)
+                .then(result => {
+                    console.log('back to watchlist', result)
+                })
 
             // _.debounce(() => { this.test() }, 200);
 

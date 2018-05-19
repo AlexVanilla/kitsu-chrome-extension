@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import '../css/style.scss'
+// import icon from './test.gif';
 
-class Load extends PureComponent {
+
+export default class Load extends PureComponent {
     state = {
         loading: true
     };
@@ -14,7 +16,9 @@ class Load extends PureComponent {
         const { loading } = this.state;
 
         if (loading) { // if your component doesn't have to wait for an async action, remove this block 
-            return null; // render null when app is not ready
+            console.log('test');
+            return <div className="loader"></div>
+            // return null; // render null when app is not ready
         }
 
         return (
@@ -22,8 +26,3 @@ class Load extends PureComponent {
         );
     }
 }
-
-ReactDOM.render(
-    <Load />,
-    document.getElementById('app')
-)

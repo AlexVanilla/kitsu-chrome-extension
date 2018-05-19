@@ -105,7 +105,10 @@ export function getList() {
 
 function _getListCallback(userId, headers) {
     return axios.get(`${baseApiUrl}edge/users/${userId}/library-entries?filter[status]=current&include=anime,manga`, headers)
-        .then(response => response.data)
+        .then(response => {
+            console.log('get list', response)
+            response.data
+        })
         .catch(onError);
 }
 
