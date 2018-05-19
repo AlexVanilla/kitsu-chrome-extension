@@ -235,8 +235,6 @@ export default class Watchlist extends PureComponent {
                     </div>
                     <br />
                     <SearchBar onSearchTermChange={search} />
-                    <h1>Watch list</h1>
-
                     <div>
                         <div className="template-container flex-container">
                             {entryRows}
