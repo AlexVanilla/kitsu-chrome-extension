@@ -30,4 +30,4 @@ yarn-error.log
 # other
 yarn.lock
 
-bundle.js
+/dist/bundle.js
