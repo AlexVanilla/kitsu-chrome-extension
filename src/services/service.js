@@ -83,6 +83,7 @@ export function search(input) {
 
 function _searchCallback(input, headers) {
     // https://kitsu.io/api/edge/library-entries?filter[userId]=64982&filter[title]=houseki
+    // https://kitsu.io/api/edge/anime?filter[text]=gun%20gale%20online
     // https://kitsu.io/api/edge/users/64982/library-entries?filter[animeId]=13600
     // https://kitsu.io/api/edge/library-entries?filter[userId]=64982&filter[animeId]=13600
     input = encodeURIComponent(input.trim());
@@ -103,20 +104,40 @@ export function getList() {
 }
 
 function _getListCallback(userId, headers) {
-    console.log('TEST: id and headers', userId, headers)
     return axios.get(`${baseApiUrl}edge/users/${userId}/library-entries?filter[status]=current&include=anime,manga`, headers)
         .then(response => response.data)
         .catch(onError);
 }
 
 export function updateProgress(id, payload) {
+    /*{
+        "data": {
+            "id": "25993558",
+            "attributes": {
+                "progress": 3
+            },
+            "relationships": {
+                "anime": {
+                    "data": {
+                        "type": "anime",
+                        "id": "13894"
+                    }
+                },
+                "manga": {
+                    "data": null
+                }
+            },
+            "type": "library-entries"
+        }
+    }*/
+
     const safePayload = {
         data: {
+            id: payload.data.id,
             attributes: {
                 progress: payload.data.attributes.progress
             },
-            id: payload.data.id,
-            type: payload.data.type
+            type: "library-entries"
         }
     }
 

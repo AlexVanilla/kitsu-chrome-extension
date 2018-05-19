@@ -12,17 +12,19 @@
     -webkit-align-items: center;
 }
 
+@mixin button() {
+    border: none;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+}
+
 body {
     @include flex-container(row, center);
     @include vert-align-center();
     height: auto;
     width: 300px;
     float: left;
-}
-
-#root {
-    align-self: center;
-    margin: auto;
 }
 
 button:focus {
@@ -38,15 +40,18 @@ button:focus {
 }
 
 .btn-logout {
-    border: none;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: .25rem;
+    @include button();
     color: #fff;
     background-color: #007bff;
 }
+.btn-setting {
+    @include button();
+    color: #fff;
+    background-color: #333;
 
-.watchList-progress {
+}
+
+.watchlist-progress {
     border: 1px solid transparent;
     color: #fff;
     background-color: #28a745;
@@ -55,19 +60,29 @@ button:focus {
     margin-right: 5px;
 }
 
-.watchList-progressColumn {
+.watchlist-col {
+    // @include flex-container(column, space-between);
     margin-left: 3%;
     margin-top: -17px;
 }
 
-.watchList-title {
+.watchlist-btn {
+    font-size: 18px;
+    margin: 0px 8px 0px;
+}
+
+.watchlist-title {
     font-size: 14px;
     font-weight: bold;
     left: 20%;
 }
 
+.header {
+    @include flex-container(row, space-between);
+}
+
 .search-bar {
-    @include flex-container(row, space-evenly);
+    @include flex-container(row, space-between);
     @include vert-align-center();
     label {
         margin-right: 10px;

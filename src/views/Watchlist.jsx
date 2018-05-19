@@ -200,22 +200,25 @@ export default class Watchlist extends PureComponent {
 
                 return (
                     // watchlist-item
-                    <div key={entry.id} className="">
+                    <div key={entry.id} className="watchlist-item">
                         <div>
                             <img alt="thumbnail" className="" src={includedAttributes.posterImage.medium} height={85} width={60} />
                             {/* TODO: finish links to redirect to kitsu site */}
                         </div>
                         {/* watchList-progressColumn */}
-                        <div className="">
-                            {/* watchList-title */}
-                            <p className="" href={`https://kitsu.io/${entryType}/${includedAttributes.slug}`}>{includedAttributes.canonicalTitle}</p>
-                            {/* watchList-progress */}
-                            <button className="" onClick={() => { this.decrementProgress(entry.id, entry.attributes.progress, index) }}>-</button>
-                            <button className="" onClick={() => { this.incrementProgress(entry.id, entry.attributes.progress, index) }}>+</button>
-                            <span>{entryType === "anime" ? "Ep." : "Ch."} {this.state.entriesProgress[index]}</span>
-                            <p onClick={this.showModal}>
-                                <i className="fas fa-edit"></i> Edit Entry
-                            </p>
+                        <div className="watchlist-col">
+                            <p className="watchlist-title" href={`https://kitsu.io/${entryType}/${includedAttributes.slug}`}>{includedAttributes.canonicalTitle}</p>
+                            {/* <button className="watchlist-progress" onClick={() => { this.decrementProgress(entry.id, entry.attributes.progress, index) }}>-</button> */}
+                            <div>
+                                <i onClick={this.showModal} className="fas fa-edit watchlist-btn"></i>
+                                <i onClick={() => { this.decrementProgress(entry.id, entry.attributes.progress, index) }} className="far fa-minus-square watchlist-btn"></i>
+                                <i onClick={() => { this.incrementProgress(entry.id, entry.attributes.progress, index) }} className="far fa-plus-square watchlist-btn"></i>
+                                {/* <button className="watchlist-progress" onClick={() => { this.incrementProgress(entry.id, entry.attributes.progress, index) }}>+</button> */}
+                                <span>{entryType === "anime" ? "Ep." : "Ch."} {this.state.entriesProgress[index]}</span>
+                                {/* <p onClick={this.showModal}>
+                                <i className="fas fa-edit watchlist-btn"></i>
+                            </p> */}
+                            </div>
                         </div>
                     </div>
                 )
@@ -223,17 +226,18 @@ export default class Watchlist extends PureComponent {
 
             return (
                 <div className="">
-                    <div className="">
+                    <div className="header">
                         <select>
                             <option value="anime,manga">Both</option>
                             <option value="anime">Anime</option>
                             <option value="manga">Manga</option>
                         </select>
-                        <button className="" type="button">Settings</button>
-                        <button className="" onClick={this.logout} type="button">Logout</button>
+                        <button className="btn-setting" type="button">Settings</button>
+                        <button className="btn-logout" onClick={this.logout} type="button">Logout</button>
                     </div>
                     <br />
                     <SearchBar onSearchTermChange={search} />
+                    <br />
                     <div>
                         <div className="">
                             {entryRows}
