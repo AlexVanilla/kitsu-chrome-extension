@@ -7,7 +7,7 @@
 /coverage
 
 # production
-/build
+/dist/bundle.js
 
 # misc
 .DS_Store
@@ -17,17 +17,14 @@
 .env.test.local
 .env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
 # errors
 bash.exe.stackdump
 sh.exe.stackdump
 .sh.exe.stackdump
-yarn-error.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # other
 yarn.lock
-
-/dist/bundle.js

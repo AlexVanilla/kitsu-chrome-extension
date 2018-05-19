@@ -31,7 +31,6 @@ export default class Watchlist extends PureComponent {
         this.decrementProgress = this.decrementProgress.bind(this);
         this.showModal = this.showModal.bind(this);
         this.search = this.search.bind(this);
-        this.test = this.test.bind(this);
 
         this.state = {
             // TODO: possibly store this in chrome.storage to avoid GET calls   
@@ -139,10 +138,6 @@ export default class Watchlist extends PureComponent {
         })
     }
 
-    test() {
-        console.log('debounce test');
-    }
-
     search(searchInput) {
         if (searchInput) {
             console.log('search fired');
@@ -204,39 +199,40 @@ export default class Watchlist extends PureComponent {
                 let entryType = entry.included.type;
 
                 return (
-                    <div key={entry.id} className="flex-containerRow" style={{ marginBottom: '10px', width: '100%' }}>
+                    <div key={entry.id} className="watchlist-item">
                         <div>
-                            <img alt="thumbnail" className="img-thumbnail" src={includedAttributes.posterImage.medium} height={85} width={60} />
+                            <img alt="thumbnail" className="" src={includedAttributes.posterImage.medium} height={85} width={60} />
                             {/* TODO: finish links to redirect to kitsu site */}
                         </div>
-                        <div className="watchList-progressColumn">
-                            <p className="watchList-title" href={`https://kitsu.io/${entryType}/${includedAttributes.slug}`}>{includedAttributes.canonicalTitle}</p>
-                            <button className="watchList-progress" onClick={() => { this.decrementProgress(entry.id, entry.attributes.progress, index) }}>-</button>
-                            <button className="watchList-progress" onClick={() => { this.incrementProgress(entry.id, entry.attributes.progress, index) }}>+</button>
-                            <span>{entryType === "anime" ? "Ep." : "Ch."} {this.state.entriesProgress[index]}</span>
-                            <p onClick={this.showModal}>
-                                <i className="fas fa-edit"></i> Edit Entry
-                            </p>
+                        <div className="watchlist-col">
+                            <p className="watchlist-title" href={`https://kitsu.io/${entryType}/${includedAttributes.slug}`}>{includedAttributes.canonicalTitle}</p>
+                            <div>
+                                <i onClick={this.showModal} className="fas fa-edit watchlist-btn"></i>
+                                <i onClick={() => { this.decrementProgress(entry.id, entry.attributes.progress, index) }} className="far fa-minus-square watchlist-btn"></i>
+                                <i onClick={() => { this.incrementProgress(entry.id, entry.attributes.progress, index) }} className="far fa-plus-square watchlist-btn"></i>
+                                <span>{entryType === "anime" ? "Ep." : "Ch."} {this.state.entriesProgress[index]}</span>
+                            </div>
                         </div>
                     </div>
                 )
             });
 
             return (
-                <div className="flex-container">
-                    <div className="flex-container-row">
+                <div className="">
+                    <div className="header">
                         <select>
                             <option value="anime,manga">Both</option>
                             <option value="anime">Anime</option>
                             <option value="manga">Manga</option>
                         </select>
-                        <button className="" type="button">Settings</button>
-                        <button className="watchList-logout" onClick={this.logout} type="button">Logout</button>
+                        <button className="btn-setting" type="button">Settings</button>
+                        <button className="btn-logout" onClick={this.logout} type="button">Logout</button>
                     </div>
                     <br />
                     <SearchBar onSearchTermChange={search} />
+                    <br />
                     <div>
-                        <div className="template-container flex-container">
+                        <div className="">
                             {entryRows}
                         </div>
                     </div>

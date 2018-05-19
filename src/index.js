@@ -1,14 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './views/app';
-import './css/index.css';
+import './css/style.scss';
 
 // import { MemoryRouter } from 'react-router';
-// import Watchlist from './views/Watchlist';
-// import Login from './views/login';
 
-// import './css/bootstrap.min.css'
-// import './js/bootstrap.bundle.min'
 
 // FIXME: find way to store user session with chrome.cookies or chrome.storage
 // ReactDOM.render(
