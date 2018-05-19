@@ -199,25 +199,18 @@ export default class Watchlist extends PureComponent {
                 let entryType = entry.included.type;
 
                 return (
-                    // watchlist-item
                     <div key={entry.id} className="watchlist-item">
                         <div>
                             <img alt="thumbnail" className="" src={includedAttributes.posterImage.medium} height={85} width={60} />
                             {/* TODO: finish links to redirect to kitsu site */}
                         </div>
-                        {/* watchList-progressColumn */}
                         <div className="watchlist-col">
                             <p className="watchlist-title" href={`https://kitsu.io/${entryType}/${includedAttributes.slug}`}>{includedAttributes.canonicalTitle}</p>
-                            {/* <button className="watchlist-progress" onClick={() => { this.decrementProgress(entry.id, entry.attributes.progress, index) }}>-</button> */}
                             <div>
                                 <i onClick={this.showModal} className="fas fa-edit watchlist-btn"></i>
                                 <i onClick={() => { this.decrementProgress(entry.id, entry.attributes.progress, index) }} className="far fa-minus-square watchlist-btn"></i>
                                 <i onClick={() => { this.incrementProgress(entry.id, entry.attributes.progress, index) }} className="far fa-plus-square watchlist-btn"></i>
-                                {/* <button className="watchlist-progress" onClick={() => { this.incrementProgress(entry.id, entry.attributes.progress, index) }}>+</button> */}
                                 <span>{entryType === "anime" ? "Ep." : "Ch."} {this.state.entriesProgress[index]}</span>
-                                {/* <p onClick={this.showModal}>
-                                <i className="fas fa-edit watchlist-btn"></i>
-                            </p> */}
                             </div>
                         </div>
                     </div>
