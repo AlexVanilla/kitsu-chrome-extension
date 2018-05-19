@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import Login from './login';
 import Watchlist from './watchlist';
-import '../css/style.css';
+import '../css/style.scss';
 
 export default class App extends PureComponent {
     constructor() {

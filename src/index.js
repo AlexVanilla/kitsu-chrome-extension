@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './views/app';
-import './css/index.css';
+// import './css/index.css';
 
 // import { MemoryRouter } from 'react-router';
 // import Watchlist from './views/Watchlist';
