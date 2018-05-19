@@ -31,7 +31,6 @@ export default class Watchlist extends PureComponent {
         this.decrementProgress = this.decrementProgress.bind(this);
         this.showModal = this.showModal.bind(this);
         this.search = this.search.bind(this);
-        this.test = this.test.bind(this);
 
         this.state = {
             // TODO: possibly store this in chrome.storage to avoid GET calls   
@@ -139,10 +138,6 @@ export default class Watchlist extends PureComponent {
         })
     }
 
-    test() {
-        console.log('debounce test');
-    }
-
     search(searchInput) {
         if (searchInput) {
             console.log('search fired');
@@ -204,15 +199,19 @@ export default class Watchlist extends PureComponent {
                 let entryType = entry.included.type;
 
                 return (
-                    <div key={entry.id} className="flex-containerRow" style={{ marginBottom: '10px', width: '100%' }}>
+                    // watchlist-item
+                    <div key={entry.id} className="">
                         <div>
-                            <img alt="thumbnail" className="img-thumbnail" src={includedAttributes.posterImage.medium} height={85} width={60} />
+                            <img alt="thumbnail" className="" src={includedAttributes.posterImage.medium} height={85} width={60} />
                             {/* TODO: finish links to redirect to kitsu site */}
                         </div>
-                        <div className="watchList-progressColumn">
-                            <p className="watchList-title" href={`https://kitsu.io/${entryType}/${includedAttributes.slug}`}>{includedAttributes.canonicalTitle}</p>
-                            <button className="watchList-progress" onClick={() => { this.decrementProgress(entry.id, entry.attributes.progress, index) }}>-</button>
-                            <button className="watchList-progress" onClick={() => { this.incrementProgress(entry.id, entry.attributes.progress, index) }}>+</button>
+                        {/* watchList-progressColumn */}
+                        <div className="">
+                            {/* watchList-title */}
+                            <p className="" href={`https://kitsu.io/${entryType}/${includedAttributes.slug}`}>{includedAttributes.canonicalTitle}</p>
+                            {/* watchList-progress */}
+                            <button className="" onClick={() => { this.decrementProgress(entry.id, entry.attributes.progress, index) }}>-</button>
+                            <button className="" onClick={() => { this.incrementProgress(entry.id, entry.attributes.progress, index) }}>+</button>
                             <span>{entryType === "anime" ? "Ep." : "Ch."} {this.state.entriesProgress[index]}</span>
                             <p onClick={this.showModal}>
                                 <i className="fas fa-edit"></i> Edit Entry
@@ -223,20 +222,20 @@ export default class Watchlist extends PureComponent {
             });
 
             return (
-                <div className="flex-container">
-                    <div className="flex-container-row">
+                <div className="">
+                    <div className="">
                         <select>
                             <option value="anime,manga">Both</option>
                             <option value="anime">Anime</option>
                             <option value="manga">Manga</option>
                         </select>
                         <button className="" type="button">Settings</button>
-                        <button className="watchList-logout" onClick={this.logout} type="button">Logout</button>
+                        <button className="" onClick={this.logout} type="button">Logout</button>
                     </div>
                     <br />
                     <SearchBar onSearchTermChange={search} />
                     <div>
-                        <div className="template-container flex-container">
+                        <div className="">
                             {entryRows}
                         </div>
                     </div>

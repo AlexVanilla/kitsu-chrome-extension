@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import Login from './login';
 import Watchlist from './watchlist';
-import '../css/style.scss';
 
 export default class App extends PureComponent {
     constructor() {
@@ -20,12 +19,10 @@ export default class App extends PureComponent {
     }
 
     render() {
-        console.log('app render', this.state.userId)
         let component = this.state.userId ? (<Watchlist />) : (<Login />)
 
-        // TODO: implement flexbox container
         return (
-            <div className="app-componentPadding">
+            <div className="test">
                 {component}
             </div>
         )
