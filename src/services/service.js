@@ -26,16 +26,84 @@ import axios from 'axios';
 
 const baseApiUrl = "https://kitsu.io/api/";
 
+// NOTE: filters: [status]=current,planned,onHold,dropped
+
+// Adding new series to library entry
+// search GET https://kitsu.io/api/edge/anime?filter[text]=gun%20gale%20online
+
+// get animeId
+
+// POST to https://kitsu.io/api/edge/library-entries
+/*var payload: {
+    "data": {
+        "attributes": {
+            "status": "planned"
+        },
+        "relationships": {
+            "anime": {
+                "data": {
+                    "type": "anime",
+                    "id": "605" TODO: get animeId and put in this payload
+                }
+            },
+            "user": {
+                "data": {
+                    "type": "users",
+                    "id": "64982"
+                }
+            }
+        },
+        "type": "library-entries"
+    }
+}*/
+
+// updating library entry 
+
+/* PATCH payload
+{
+    "data": {
+        "attributes": {
+            "progress": "2"
+        },
+        "id": "25993558",
+        "type": "libraryEntries"
+    }
+}*/
+
+
+
+
+export function search(input) {
+    return new Promise((resolve, reject) => {
+        chrome.storage.sync.get(['userId', 'headers'], result => {
+            resolve(_searchCallback(input, result.headers))
+        });
+    });
+}
+
+function _searchCallback(input, headers) {
+    // https://kitsu.io/api/edge/library-entries?filter[userId]=64982&filter[title]=houseki
+    // https://kitsu.io/api/edge/users/64982/library-entries?filter[animeId]=13600
+    // https://kitsu.io/api/edge/library-entries?filter[userId]=64982&filter[animeId]=13600
+    input = encodeURIComponent(input.trim());
+    console.log('input', input);
+    return axios.get(`${baseApiUrl}edge/anime?filter[text]=${input}`, headers)
+        .then(response => {
+            console.log('got response from search', response);
+        })
+        .catch(onError);
+}
+
 export function getList() {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get(['userId', 'headers'], result => {
             resolve(_getListCallback(result.userId, result.headers))
-        })
+        });
     });
 }
 
 function _getListCallback(userId, headers) {
-    console.log('inliscb', userId, headers)
+    console.log('TEST: id and headers', userId, headers)
     return axios.get(`${baseApiUrl}edge/users/${userId}/library-entries?filter[status]=current&include=anime,manga`, headers)
         .then(response => response.data)
         .catch(onError);

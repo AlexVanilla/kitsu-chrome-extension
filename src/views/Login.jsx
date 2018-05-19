@@ -1,7 +1,7 @@
 /* global chrome */
 import React, { PureComponent } from 'react';
 import { Route, Redirect, Switch } from 'react-router'
-import login from '../services/service.js';
+import { login } from '../services/service.js';
 
 export default class Login extends PureComponent {
   constructor() {
