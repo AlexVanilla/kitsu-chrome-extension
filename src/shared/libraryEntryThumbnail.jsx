@@ -7,6 +7,8 @@ export default class CurrentLibraryEntries extends PureComponent {
     componentDidMount() {
         console.log('mount', this.props.loading)
     }
+
+
     componentDidUpdate() {
         console.log('I updated?', this.props.loading)
     }
@@ -23,7 +25,8 @@ export default class CurrentLibraryEntries extends PureComponent {
         } else {
             return (
                 <div>
-                    <img alt="thumbnail" src={this.props.imgSrc} height={85} width={60} />
+                    {/* h85w60 */}
+                    <img alt="thumbnail" src={this.props.imgSrc} height={99} width={70} />
                 </div>
             )
         }

@@ -105,10 +105,7 @@ export function getList() {
 
 function _getListCallback(userId, headers) {
     return axios.get(`${baseApiUrl}edge/users/${userId}/library-entries?filter[status]=current&include=anime,manga`, headers)
-        .then(response => {
-            console.log('get list', response)
-            return response.data
-        })
+        .then(response => response.data)
         .catch(onError);
 }
 
@@ -151,11 +148,13 @@ export function updateProgress(id, payload) {
     })
 }
 
+// NOTE: can't increment or decrement progress consecutively
+// could be from the api to limit number of PATCH requests to url
 function _updateProgressCallback(id, safePayload, headers) {
     return axios.patch(`${baseApiUrl}edge/library-entries/${id}`, safePayload, {
             headers: headers
         })
-        .then(response => response)
+        .then(response => response.data.data.attributes.progress)
         .catch(onError)
 }
 

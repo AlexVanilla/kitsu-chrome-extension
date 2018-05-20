@@ -128,3 +128,12 @@ button:focus {
         transform: rotate(360deg);
     }
 }
+
+.synopsis {
+    text-align: justify;
+}
+
+.test {
+    display: flex;
+    flex-direction: column;
+}

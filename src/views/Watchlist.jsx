@@ -17,12 +17,13 @@ prevent user from exiting out of extension while in middle of PATCH request
 
 
 import React, { PureComponent } from 'react';
-import { search, getList, updateProgress, onError } from '../services/service.js';
-import debounce from 'lodash.debounce';
-// import _ from 'lodash';
 import SearchBar from '../shared/searchBar';
+import SearchResults from '../shared/searchResults';
 import CurrentLibraryEntries from '../shared/currentLibraryEntries';
 import Loader from '../shared/loader';
+
+import { search, getList, updateProgress, onError } from '../services/service.js';
+import debounce from 'lodash.debounce';
 
 export default class Watchlist extends PureComponent {
     state = {
@@ -39,7 +40,6 @@ export default class Watchlist extends PureComponent {
             .then(result => {
                 // Need additional information for the anime and manga
                 const newData = result.data;
-                const newEntriesProgress = [];
 
                 // Convert included array into hashtable
                 const included = result.included.reduce((accumulator, currentValue) => {
@@ -59,15 +59,7 @@ export default class Watchlist extends PureComponent {
 
                     // NOTE: included is an object with the 'id' as the key property
                     entry.included = included[id];
-                    newEntriesProgress.push(entry.attributes.progress)
                 }
-
-                // TODO: have default img and name
-                // TODO: add url slug
-                // let entryRows = this.state.userEntries.map((entry, index) => {
-
-                // store in the state object
-                // this.setState({ currentWatchlistDOM: entryRows })
 
                 this.setState({
                     userEntries: newData,
@@ -81,22 +73,39 @@ export default class Watchlist extends PureComponent {
 
     } // end of componentDidMount()
 
-    logout() {
+    logout = () => {
         chrome.storage.sync.set({ userId: null }, () => {
             console.log('logged out worked');
         })
     }
 
-    search(searchInput) {
+    querySearch = (searchInput) => {
         if (searchInput) {
             console.log('search fired');
+            this.setState({ loading: true })
             search(searchInput)
                 .then(result => {
                     console.log('back to watchlist', result)
+                    this.setState(prevState => {
+                        let newSearchResults = [...prevState.searchResults];
+                        newSearchResults = result.data;
+                        console.log('newsearchresults', newSearchResults)
+                        return {
+                            searchResults: newSearchResults,
+                            loading: false
+                        }
+                    });
                 })
                 .catch(error => {
                     console.error('error in search', error);
                 })
+        } else {
+            this.setState(prevState => {
+                return {
+                    searchResults: [],
+                    loading: false
+                }
+            });
         }
 
         /*
@@ -122,11 +131,20 @@ export default class Watchlist extends PureComponent {
 
 
     render() {
-        let output = (this.state.userEntries === null || this.state.userEntries.length === 0) ? (<Loader />) : (<CurrentLibraryEntries libraryEntries={this.state.userEntries} />)
+        let output = null;
 
+        if (this.state.loading || this.state.userEntries === null || this.state.userEntries.length === 0) {
+            output = <Loader />
+        } else if (this.state.searchResults.length !== 0) {
+            output = <SearchResults searchResults={this.state.searchResults} />
+        } else {
+            output = <CurrentLibraryEntries libraryEntries={this.state.userEntries} />
+        }
 
-        const search = debounce(searchInput => {
-            this.search(searchInput)
+        // } ? (<Loader />) : (<CurrentLibraryEntries libraryEntries={this.state.userEntries} />)
+
+        const debounceQuerySearch = debounce(searchInput => {
+            this.querySearch(searchInput)
         }, 500);
 
 
@@ -142,7 +160,7 @@ export default class Watchlist extends PureComponent {
                     <button className="btn-logout" onClick={this.logout} type="button">Logout</button>
                 </div>
                 <br />
-                <SearchBar onSearchTermChange={search} />
+                <SearchBar onSearchTermChange={debounceQuerySearch} />
                 <br />
                 <div>
                     {output}
