@@ -29,7 +29,6 @@ export default class Watchlist extends PureComponent {
         // TODO: possibly store this in chrome.storage to avoid GET calls   
         userEntries: [],
         searchResults: [],
-        currentWatchlistDOM: null,
         searchResultsDOM: null,
         loading: true
     }
@@ -72,7 +71,6 @@ export default class Watchlist extends PureComponent {
 
                 this.setState({
                     userEntries: newData,
-                    entriesProgress: newEntriesProgress,
                     loading: false
                 });
             })
@@ -124,7 +122,7 @@ export default class Watchlist extends PureComponent {
 
 
     render() {
-        let test = (this.state.userEntries === null || this.state.userEntries.length === 0) ? (<Loader />) : (<CurrentLibraryEntries libraryEntries={this.state.userEntries} />)
+        let output = (this.state.userEntries === null || this.state.userEntries.length === 0) ? (<Loader />) : (<CurrentLibraryEntries libraryEntries={this.state.userEntries} />)
 
 
         const search = debounce(searchInput => {
@@ -147,8 +145,7 @@ export default class Watchlist extends PureComponent {
                 <SearchBar onSearchTermChange={search} />
                 <br />
                 <div>
-                    {test}
-                    {/* {this.state.currentWatchlistDOM} */}
+                    {output}
                 </div>
                 {/* <pre>{JSON.stringify(this.state.data, null, 4)}</pre> */}
             </div>
