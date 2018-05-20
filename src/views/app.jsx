@@ -22,7 +22,7 @@ export default class App extends PureComponent {
         let component = this.state.userId ? (<Watchlist />) : (<Login />)
 
         return (
-            <div className="test">
+            <div>
                 {component}
             </div>
         )

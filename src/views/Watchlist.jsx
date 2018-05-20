@@ -19,25 +19,19 @@ prevent user from exiting out of extension while in middle of PATCH request
 import React, { PureComponent } from 'react';
 import { search, getList, updateProgress, onError } from '../services/service.js';
 import debounce from 'lodash.debounce';
-import _ from 'lodash';
+// import _ from 'lodash';
 import SearchBar from '../shared/searchBar';
-// import { test } from '../shared/test.gif'
+import CurrentLibraryEntries from '../shared/currentLibraryEntries';
+import Loader from '../shared/loader';
 
 export default class Watchlist extends PureComponent {
-    constructor(props, context) {
-        super(props, context)
-
-        this.incrementProgress = this.incrementProgress.bind(this);
-        this.decrementProgress = this.decrementProgress.bind(this);
-        this.showModal = this.showModal.bind(this);
-        this.search = this.search.bind(this);
-
-        this.state = {
-            // TODO: possibly store this in chrome.storage to avoid GET calls   
-            userEntries: [],
-            searchResults: [],
-            loading: true
-        }
+    state = {
+        // TODO: possibly store this in chrome.storage to avoid GET calls   
+        userEntries: [],
+        searchResults: [],
+        currentWatchlistDOM: null,
+        searchResultsDOM: null,
+        loading: true
     }
 
     componentDidMount() {
@@ -69,6 +63,13 @@ export default class Watchlist extends PureComponent {
                     newEntriesProgress.push(entry.attributes.progress)
                 }
 
+                // TODO: have default img and name
+                // TODO: add url slug
+                // let entryRows = this.state.userEntries.map((entry, index) => {
+
+                // store in the state object
+                // this.setState({ currentWatchlistDOM: entryRows })
+
                 this.setState({
                     userEntries: newData,
                     entriesProgress: newEntriesProgress,
@@ -81,56 +82,6 @@ export default class Watchlist extends PureComponent {
             })
 
     } // end of componentDidMount()
-
-    incrementProgress(id, progress, index) {
-        const payload = {
-            "data": {
-                "id": `${id}`,
-                "type": "libraryEntries",
-                "attributes": {
-                    "progress": progress += 1
-                }
-            }
-        }
-
-        updateProgress(id, payload)
-            .then(() => {
-                this.setState(prevState => {
-                    let newEntriesProgress = [...prevState.entriesProgress];
-                    newEntriesProgress[index] += 1;
-                    return {
-                        entriesProgress: newEntriesProgress
-                    }
-                })
-                return
-            })
-            .catch(onError)
-
-    }
-
-    decrementProgress(id, progress, index) {
-        const payload = {
-            "data": {
-                "id": `${id}`,
-                "type": "libraryEntries",
-                "attributes": {
-                    "progress": progress -= 1
-                }
-            }
-        };
-
-        updateProgress(id, payload)
-            .then(() => {
-                this.setState(prevState => {
-                    let newEntriesProgress = [...prevState.entriesProgress];
-                    newEntriesProgress[index] -= 1;
-                    return {
-                        entriesProgress: newEntriesProgress
-                    }
-                })
-            })
-            .catch(onError)
-    }
 
     logout() {
         chrome.storage.sync.set({ userId: null }, () => {
@@ -145,23 +96,10 @@ export default class Watchlist extends PureComponent {
                 .then(result => {
                     console.log('back to watchlist', result)
                 })
-
-            // _.debounce(() => { this.test() }, 200);
-
-            // debounce(function() {
-            //     console.log('debounce search fired')
-            // }, 2000);
-
-            // setTimeout(function() {
-            //     console.log('delayed search fired')
-            // }.bind(this), 2000);
-            // console.log('search fired', input);
-
-            // setTimeout(search(input), 3000)
+                .catch(error => {
+                    console.error('error in search', error);
+                })
         }
-
-
-        // TODO: GET https://kitsu.io/api/edge/anime?filter[text]=afro
 
         /*
         {
@@ -184,65 +122,36 @@ export default class Watchlist extends PureComponent {
                         */
     }
 
-    showModal() {
-        console.log('TODO: create modal function')
-    }
 
     render() {
-        if (this.state.userEntries === null || this.state.userEntries.length === 0) { return null }
-        else {
-            const search = _.debounce(searchInput => {
-                this.search(searchInput)
-            }, 500);
+        let test = (this.state.userEntries === null || this.state.userEntries.length === 0) ? (<Loader />) : (<CurrentLibraryEntries libraryEntries={this.state.userEntries} />)
 
-            // TODO: have default img and name
-            // TODO: add url slug
-            let entryRows = this.state.userEntries.map((entry, index) => {
-                // Minimize object property accessing
-                let includedAttributes = entry.included.attributes;
-                let entryType = entry.included.type;
 
-                return (
-                    <div key={entry.id} className="watchlist-item">
-                        <div>
-                            <img alt="thumbnail" className="" src={includedAttributes.posterImage.medium} height={85} width={60} />
-                            {/* TODO: finish links to redirect to kitsu site */}
-                        </div>
-                        <div className="watchlist-col">
-                            <p className="watchlist-title" href={`https://kitsu.io/${entryType}/${includedAttributes.slug}`}>{includedAttributes.canonicalTitle}</p>
-                            <div>
-                                <i onClick={this.showModal} className="fas fa-edit watchlist-btn"></i>
-                                <i onClick={() => { this.decrementProgress(entry.id, entry.attributes.progress, index) }} className="far fa-minus-square watchlist-btn"></i>
-                                <i onClick={() => { this.incrementProgress(entry.id, entry.attributes.progress, index) }} className="far fa-plus-square watchlist-btn"></i>
-                                <span>{entryType === "anime" ? "Ep." : "Ch."} {this.state.entriesProgress[index]}</span>
-                            </div>
-                        </div>
-                    </div>
-                )
-            });
+        const search = debounce(searchInput => {
+            this.search(searchInput)
+        }, 500);
 
-            return (
-                <div className="">
-                    <div className="header">
-                        <select>
-                            <option value="anime,manga">Both</option>
-                            <option value="anime">Anime</option>
-                            <option value="manga">Manga</option>
-                        </select>
-                        <button className="btn-setting" type="button">Settings</button>
-                        <button className="btn-logout" onClick={this.logout} type="button">Logout</button>
-                    </div>
-                    <br />
-                    <SearchBar onSearchTermChange={search} />
-                    <br />
-                    <div>
-                        <div className="">
-                            {entryRows}
-                        </div>
-                    </div>
-                    {/* <pre>{JSON.stringify(this.state.data, null, 4)}</pre> */}
+
+        return (
+            <div className="home-container">
+                <div className="header">
+                    <select>
+                        <option value="anime,manga">Both</option>
+                        <option value="anime">Anime</option>
+                        <option value="manga">Manga</option>
+                    </select>
+                    <button className="btn-setting" type="button">Settings</button>
+                    <button className="btn-logout" onClick={this.logout} type="button">Logout</button>
                 </div>
-            )
-        }
+                <br />
+                <SearchBar onSearchTermChange={search} />
+                <br />
+                <div>
+                    {test}
+                    {/* {this.state.currentWatchlistDOM} */}
+                </div>
+                {/* <pre>{JSON.stringify(this.state.data, null, 4)}</pre> */}
+            </div>
+        )
     }
 }

@@ -90,7 +90,7 @@ function _searchCallback(input, headers) {
     console.log('input', input);
     return axios.get(`${baseApiUrl}edge/anime?filter[text]=${input}`, headers)
         .then(response => {
-            console.log('got response from search', response);
+            return response.data;
         })
         .catch(onError);
 }
@@ -107,7 +107,7 @@ function _getListCallback(userId, headers) {
     return axios.get(`${baseApiUrl}edge/users/${userId}/library-entries?filter[status]=current&include=anime,manga`, headers)
         .then(response => {
             console.log('get list', response)
-            response.data
+            return response.data
         })
         .catch(onError);
 }

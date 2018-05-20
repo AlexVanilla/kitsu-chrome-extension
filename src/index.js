@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './views/app';
 import './css/style.scss';
-import Load from './shared/load';
+import Loader from './shared/loader';
 
 // import { MemoryRouter } from 'react-router';
 
@@ -19,6 +19,6 @@ import Load from './shared/load';
 // ReactDOM.render(<Login /> , document.getElementById('root'));
 
 
-// ReactDOM.render(<App /> , document.getElementById('root'));
+ReactDOM.render(<App /> , document.getElementById('root'));
 
-ReactDOM.render(<Load />, document.getElementById('app'));
+// ReactDOM.render(<Loader />, document.getElementById('root'));
