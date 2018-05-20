@@ -1,6 +1,6 @@
 # Currently on hold to focus on getting employment
 
-# Kitsu Chrome Extension
+# Kitsu Chrome Extension (WIP)
 
 Gets the watchlist of the user's Kitsu/Hummingbird account
 
@@ -17,10 +17,11 @@ Though I do have a couple roadmap features I want to implement when I find time
 * ~~Have login component redirect to my watchlist component~~ Implemented!
 * Implement caching to store users information
 * Implement search feature
-* ~~Take out bootstrap~~ and implement own stylesheet (preferably SCSS I wanna pick up a CSS preprocessor)
+* ~~Take out bootstrap and implement own stylesheet (preferably SCSS I wanna pick up a CSS preprocessor)~~ Implemented!
 * Have drop box to filter just anime or manga in the list
 * clean up code
 
 ## Other notes
 * Using [Kitsu Api](https://kitsu.docs.apiary.io/)
-* Utilzing React
+* Utilzing React and fontawesome icons
+
