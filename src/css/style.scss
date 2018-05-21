@@ -55,17 +55,7 @@ button:focus {
     background-color: #333;
 }
 
-.watchlist-progress {
-    border: 1px solid transparent;
-    color: #fff;
-    background-color: #28a745;
-    border-color: #28a745;
-    border-radius: .25rem;
-    margin-right: 5px;
-}
-
 .watchlist-col {
-    // @include flex-container(column, space-between);
     margin-left: 3%;
     margin-top: -17px;
 }
@@ -102,8 +92,8 @@ button:focus {
 
 .img-loader-container {
     @include flex-container(row, center);
-    min-height: 85px;
-    min-width: 60px;
+    min-height: 113px;
+    min-width: 80px;
     background-color: rgba(0, 0, 0, 0.1);
 }
 
@@ -129,11 +119,22 @@ button:focus {
     }
 }
 
-.synopsis {
-    text-align: justify;
+.edit-entry-btn:hover {
+    opacity: 0.2;
+    cursor: pointer;
 }
 
-.test {
-    display: flex;
-    flex-direction: column;
+.edit-entry-btn i {
+    margin: 0px;
+}
+
+.synopsis {
+    text-align: justify;
+    overflow: hidden;
+    height: 170px;
+    transition: 1s;
+}
+
+.synopsis:hover {
+    height: 100%;
 }

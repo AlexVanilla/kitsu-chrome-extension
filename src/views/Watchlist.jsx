@@ -81,15 +81,12 @@ export default class Watchlist extends PureComponent {
 
     querySearch = (searchInput) => {
         if (searchInput) {
-            console.log('search fired');
             this.setState({ loading: true })
             search(searchInput)
                 .then(result => {
-                    console.log('back to watchlist', result)
                     this.setState(prevState => {
                         let newSearchResults = [...prevState.searchResults];
                         newSearchResults = result.data;
-                        console.log('newsearchresults', newSearchResults)
                         return {
                             searchResults: newSearchResults,
                             loading: false
@@ -107,26 +104,6 @@ export default class Watchlist extends PureComponent {
                 }
             });
         }
-
-        /*
-        {
-            "data": [
-                {
-                    "id": "1165",
-                    "type": "anime",
-                    "links": {
-                        "self": "https://kitsu.io/api/edge/anime/1165"
-                    },
-                    "attributes": {
-                        "createdAt": "2013-02-20T16:18:44.268Z", 
-                        "updatedAt": "2018-05-16T00:17:11.522Z", 
-                        "slug": "afro-samurai", 
-                        "synopsis": "When he was a young boy, Afro witnessed his father be cut down in a duel at the hands of a man known only as Justice. After ...,
-                        "posterImage": {
-
-                        }
-
-                        */
     }
 
 
@@ -141,12 +118,10 @@ export default class Watchlist extends PureComponent {
             output = <CurrentLibraryEntries libraryEntries={this.state.userEntries} />
         }
 
-        // } ? (<Loader />) : (<CurrentLibraryEntries libraryEntries={this.state.userEntries} />)
-
+        // Have the search function only fire after a certain amount of time (to prevent making excessive requests)
         const debounceQuerySearch = debounce(searchInput => {
             this.querySearch(searchInput)
         }, 500);
-
 
         return (
             <div className="home-container">
@@ -162,9 +137,7 @@ export default class Watchlist extends PureComponent {
                 <br />
                 <SearchBar onSearchTermChange={debounceQuerySearch} />
                 <br />
-                <div>
-                    {output}
-                </div>
+                {output}
                 {/* <pre>{JSON.stringify(this.state.data, null, 4)}</pre> */}
             </div>
         )

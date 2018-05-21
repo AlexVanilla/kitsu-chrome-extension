@@ -7,7 +7,7 @@ export default class CurrentLibraryEntries extends PureComponent {
     state = {
         libraryEntriesProgress: [],
         libraryEntriesDOM: null,
-        loading: false
+        loading: []
     }
 
     componentDidMount() {
@@ -21,14 +21,26 @@ export default class CurrentLibraryEntries extends PureComponent {
         this.setState({ libraryEntriesProgress });
     }
 
-    test1 = () => {
+    test1 = (index) => {
         console.log('set to true')
-        this.setState({ loading: true })
+        this.setState(prevState => {
+            let newLoading = [...prevState.loading];
+            newLoading[index] = true
+            return {
+                loading: newLoading
+            }
+        })
     }
 
-    test2 = () => {
-        console.log('set to false')
-        this.setState({ loading: false })
+    test2 = (index) => {
+        console.log('set to true')
+        this.setState(prevState => {
+            let newLoading = [...prevState.loading];
+            newLoading[index] = false;
+            return {
+                loading: newLoading
+            }
+        })
     }
 
     showModal = () => {
@@ -87,7 +99,7 @@ export default class CurrentLibraryEntries extends PureComponent {
 
             return (
                 <div key={entry.id} className="watchlist-item">
-                    <LibraryEntryThumbnail loading={this.state.loading} imgSrc={includedAttributes.posterImage.medium} />
+                    <LibraryEntryThumbnail loading={this.state.loading[index]} imgSrc={includedAttributes.posterImage.medium} />
                     <div className="watchlist-col">
                         <p className="watchlist-title" href={`https://kitsu.io/${entry.included.type}/${includedAttributes.slug}`}>{includedAttributes.canonicalTitle}</p>
                         <div>
@@ -98,8 +110,8 @@ export default class CurrentLibraryEntries extends PureComponent {
                             <span>{entry.included.type === "anime" ? "Ep." : "Ch."} {this.state.libraryEntriesProgress[index]} of {episodeCount}</span>
                         </div>
                         <p>
-                            <i onClick={this.test1} className="far fa-plus-square watchlist-btn"></i>
-                            <i onClick={this.test2} className="far fa-plus-square watchlist-btn"></i>
+                            <i onClick={() => { this.test1(index) }} className="far fa-plus-square watchlist-btn"></i>
+                            <i onClick={() => { this.test2(index) }} className="far fa-plus-square watchlist-btn"></i>
                         </p>
                     </div>
                 </div>

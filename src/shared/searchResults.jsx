@@ -23,7 +23,7 @@ export default class SearchResults extends PureComponent {
                     <div>
                         <LibraryEntryThumbnail imgSrc={entry.attributes.posterImage.medium} />
                         <br />
-                        <i onClick={this.showModal} className="fas fa-edit watchlist-btn" style={{ margin: '0px' }}></i>
+                        <span onClick={this.showModal} className="edit-entry-btn"><i className="fas fa-edit"></i> Edit Entry</span>
                         <br />
                         <br />
                         <span><strong>Episodes:  </strong><br />{episodeCount}</span>
@@ -43,33 +43,6 @@ export default class SearchResults extends PureComponent {
 
         this.setState({ searchResultsDOM });
 
-        // let libraryEntriesDOM = this.props.libraryEntries.map((entry, index) => {
-        //     // Minimize object property accessing
-        //     let includedAttributes = entry.included.attributes;
-        //     let entryType = entry.included.type;
-        //     let progress = entry.attributes.progress;
-        //     let episodeCount = entry.included.attributes.episodeCount ? entry.included.attributes.episodeCount : '??';
-
-        //     newEntriesProgress.push(progress);
-
-        //     return (
-        //         <div key={entry.id} className="watchlist-item">
-        //             <LibraryEntryThumbnail loading={this.state.loading} imgSrc={includedAttributes.posterImage.medium} />
-        //             <div className="watchlist-col">
-        //                 <p className="watchlist-title" href={`https://kitsu.io/${entryType}/${includedAttributes.slug}`}>{includedAttributes.canonicalTitle}</p>
-        //                 <div>
-        //                     <i onClick={this.showModal} className="fas fa-edit watchlist-btn"></i>
-        //                     <i onClick={() => { this.decrementProgress(entry.id, progress, index) }} className="far fa-minus-square watchlist-btn"></i>
-        //                     <i onClick={() => { this.incrementProgress(entry.id, progress, index) }} className="far fa-plus-square watchlist-btn"></i>
-        //                     <i onClick={this.test1} className="far fa-plus-square watchlist-btn"></i>
-        //                     <i onClick={this.test2} className="far fa-plus-square watchlist-btn"></i>
-        //                     {/* TODO: also add the total number of chapters if manga */}
-        //                     <span>{entryType === "anime" ? "Ep." : "Ch."} {progress} of {episodeCount}</span>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     )
-        // });
     }
 
     render() {

@@ -19,12 +19,10 @@ export default class App extends PureComponent {
     }
 
     render() {
-        let component = this.state.userId ? (<Watchlist />) : (<Login />)
-
         return (
-            <div>
-                {component}
-            </div>
+            <React.Fragment>
+                {this.state.userId ? (<Watchlist />) : (<Login />)}
+            </React.Fragment>
         )
     }
 }
