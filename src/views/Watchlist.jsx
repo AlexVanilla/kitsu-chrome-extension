@@ -17,27 +17,21 @@ prevent user from exiting out of extension while in middle of PATCH request
 
 
 import React, { PureComponent } from 'react';
+import SearchBar from '../shared/searchBar';
+import SearchResults from '../shared/searchResults';
+import CurrentLibraryEntries from '../shared/currentLibraryEntries';
+import Loader from '../shared/loader';
+
 import { search, getList, updateProgress, onError } from '../services/service.js';
 import debounce from 'lodash.debounce';
-import _ from 'lodash';
-import SearchBar from '../shared/searchBar';
-// import { test } from '../shared/test.gif'
 
 export default class Watchlist extends PureComponent {
-    constructor(props, context) {
-        super(props, context)
-
-        this.incrementProgress = this.incrementProgress.bind(this);
-        this.decrementProgress = this.decrementProgress.bind(this);
-        this.showModal = this.showModal.bind(this);
-        this.search = this.search.bind(this);
-
-        this.state = {
-            // TODO: possibly store this in chrome.storage to avoid GET calls   
-            userEntries: [],
-            searchResults: [],
-            loading: true
-        }
+    state = {
+        // TODO: possibly store this in chrome.storage to avoid GET calls   
+        userEntries: [],
+        searchResults: [],
+        searchResultsDOM: null,
+        loading: true
     }
 
     componentDidMount() {
@@ -46,7 +40,6 @@ export default class Watchlist extends PureComponent {
             .then(result => {
                 // Need additional information for the anime and manga
                 const newData = result.data;
-                const newEntriesProgress = [];
 
                 // Convert included array into hashtable
                 const included = result.included.reduce((accumulator, currentValue) => {
@@ -66,12 +59,10 @@ export default class Watchlist extends PureComponent {
 
                     // NOTE: included is an object with the 'id' as the key property
                     entry.included = included[id];
-                    newEntriesProgress.push(entry.attributes.progress)
                 }
 
                 this.setState({
                     userEntries: newData,
-                    entriesProgress: newEntriesProgress,
                     loading: false
                 });
             })
@@ -82,163 +73,73 @@ export default class Watchlist extends PureComponent {
 
     } // end of componentDidMount()
 
-    incrementProgress(id, progress, index) {
-        const payload = {
-            "data": {
-                "id": `${id}`,
-                "type": "libraryEntries",
-                "attributes": {
-                    "progress": progress += 1
-                }
-            }
-        }
-
-        updateProgress(id, payload)
-            .then(() => {
-                this.setState(prevState => {
-                    let newEntriesProgress = [...prevState.entriesProgress];
-                    newEntriesProgress[index] += 1;
-                    return {
-                        entriesProgress: newEntriesProgress
-                    }
-                })
-                return
-            })
-            .catch(onError)
-
-    }
-
-    decrementProgress(id, progress, index) {
-        const payload = {
-            "data": {
-                "id": `${id}`,
-                "type": "libraryEntries",
-                "attributes": {
-                    "progress": progress -= 1
-                }
-            }
-        };
-
-        updateProgress(id, payload)
-            .then(() => {
-                this.setState(prevState => {
-                    let newEntriesProgress = [...prevState.entriesProgress];
-                    newEntriesProgress[index] -= 1;
-                    return {
-                        entriesProgress: newEntriesProgress
-                    }
-                })
-            })
-            .catch(onError)
-    }
-
-    logout() {
+    logout = () => {
         chrome.storage.sync.set({ userId: null }, () => {
             console.log('logged out worked');
         })
     }
 
-    search(searchInput) {
+    querySearch = (searchInput) => {
         if (searchInput) {
-            console.log('search fired');
-
-            // _.debounce(() => { this.test() }, 200);
-
-            // debounce(function() {
-            //     console.log('debounce search fired')
-            // }, 2000);
-
-            // setTimeout(function() {
-            //     console.log('delayed search fired')
-            // }.bind(this), 2000);
-            // console.log('search fired', input);
-
-            // setTimeout(search(input), 3000)
-        }
-
-
-        // TODO: GET https://kitsu.io/api/edge/anime?filter[text]=afro
-
-        /*
-        {
-            "data": [
-                {
-                    "id": "1165",
-                    "type": "anime",
-                    "links": {
-                        "self": "https://kitsu.io/api/edge/anime/1165"
-                    },
-                    "attributes": {
-                        "createdAt": "2013-02-20T16:18:44.268Z", 
-                        "updatedAt": "2018-05-16T00:17:11.522Z", 
-                        "slug": "afro-samurai", 
-                        "synopsis": "When he was a young boy, Afro witnessed his father be cut down in a duel at the hands of a man known only as Justice. After ...,
-                        "posterImage": {
-
+            this.setState({ loading: true })
+            search(searchInput)
+                .then(result => {
+                    this.setState(prevState => {
+                        let newSearchResults = [...prevState.searchResults];
+                        newSearchResults = result.data;
+                        return {
+                            searchResults: newSearchResults,
+                            loading: false
                         }
-
-                        */
+                    });
+                })
+                .catch(error => {
+                    console.error('error in search', error);
+                })
+        } else {
+            this.setState(prevState => {
+                return {
+                    searchResults: [],
+                    loading: false
+                }
+            });
+        }
     }
 
-    showModal() {
-        console.log('TODO: create modal function')
-    }
 
     render() {
-        if (this.state.userEntries === null || this.state.userEntries.length === 0) { return null }
-        else {
-            const search = _.debounce(searchInput => {
-                this.search(searchInput)
-            }, 500);
+        let output = null;
 
-            // TODO: have default img and name
-            // TODO: add url slug
-            let entryRows = this.state.userEntries.map((entry, index) => {
-                // Minimize object property accessing
-                let includedAttributes = entry.included.attributes;
-                let entryType = entry.included.type;
-
-                return (
-                    <div key={entry.id} className="watchlist-item">
-                        <div>
-                            <img alt="thumbnail" className="" src={includedAttributes.posterImage.medium} height={85} width={60} />
-                            {/* TODO: finish links to redirect to kitsu site */}
-                        </div>
-                        <div className="watchlist-col">
-                            <p className="watchlist-title" href={`https://kitsu.io/${entryType}/${includedAttributes.slug}`}>{includedAttributes.canonicalTitle}</p>
-                            <div>
-                                <i onClick={this.showModal} className="fas fa-edit watchlist-btn"></i>
-                                <i onClick={() => { this.decrementProgress(entry.id, entry.attributes.progress, index) }} className="far fa-minus-square watchlist-btn"></i>
-                                <i onClick={() => { this.incrementProgress(entry.id, entry.attributes.progress, index) }} className="far fa-plus-square watchlist-btn"></i>
-                                <span>{entryType === "anime" ? "Ep." : "Ch."} {this.state.entriesProgress[index]}</span>
-                            </div>
-                        </div>
-                    </div>
-                )
-            });
-
-            return (
-                <div className="">
-                    <div className="header">
-                        <select>
-                            <option value="anime,manga">Both</option>
-                            <option value="anime">Anime</option>
-                            <option value="manga">Manga</option>
-                        </select>
-                        <button className="btn-setting" type="button">Settings</button>
-                        <button className="btn-logout" onClick={this.logout} type="button">Logout</button>
-                    </div>
-                    <br />
-                    <SearchBar onSearchTermChange={search} />
-                    <br />
-                    <div>
-                        <div className="">
-                            {entryRows}
-                        </div>
-                    </div>
-                    {/* <pre>{JSON.stringify(this.state.data, null, 4)}</pre> */}
-                </div>
-            )
+        if (this.state.loading || this.state.userEntries === null || this.state.userEntries.length === 0) {
+            output = <Loader />
+        } else if (this.state.searchResults.length !== 0) {
+            output = <SearchResults searchResults={this.state.searchResults} />
+        } else {
+            output = <CurrentLibraryEntries libraryEntries={this.state.userEntries} />
         }
+
+        // Have the search function only fire after a certain amount of time (to prevent making excessive requests)
+        const debounceQuerySearch = debounce(searchInput => {
+            this.querySearch(searchInput)
+        }, 500);
+
+        return (
+            <div className="home-container">
+                <div className="header">
+                    <select>
+                        <option value="anime,manga">Both</option>
+                        <option value="anime">Anime</option>
+                        <option value="manga">Manga</option>
+                    </select>
+                    <button className="btn-setting" type="button">Settings</button>
+                    <button className="btn-logout" onClick={this.logout} type="button">Logout</button>
+                </div>
+                <br />
+                <SearchBar onSearchTermChange={debounceQuerySearch} />
+                <br />
+                {output}
+                {/* <pre>{JSON.stringify(this.state.data, null, 4)}</pre> */}
+            </div>
+        )
     }
 }

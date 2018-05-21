@@ -31,6 +31,10 @@ button:focus {
     outline: 0;
 }
 
+.home-container {
+    width: 300px;
+}
+
 .watchlist-item {
     @include flex-container(row, flex-start);
     border-top: 1px solid #f6f6f6;
@@ -44,24 +48,14 @@ button:focus {
     color: #fff;
     background-color: #007bff;
 }
+
 .btn-setting {
     @include button();
     color: #fff;
     background-color: #333;
-
-}
-
-.watchlist-progress {
-    border: 1px solid transparent;
-    color: #fff;
-    background-color: #28a745;
-    border-color: #28a745;
-    border-radius: .25rem;
-    margin-right: 5px;
 }
 
 .watchlist-col {
-    // @include flex-container(column, space-between);
     margin-left: 3%;
     margin-top: -17px;
 }
@@ -69,6 +63,10 @@ button:focus {
 .watchlist-btn {
     font-size: 18px;
     margin: 0px 8px 0px;
+}
+
+.watchlist-btn:hover {
+    opacity: 0.5;
 }
 
 .watchlist-title {
@@ -90,4 +88,53 @@ button:focus {
     input {
         width: 100%;
     }
+}
+
+.img-loader-container {
+    @include flex-container(row, center);
+    min-height: 113px;
+    min-width: 80px;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.loader:empty {
+    top: calc(50% - 4em);
+    left: calc(50% - 4em);
+    margin: auto;
+    width: 1em;
+    height: 1em;
+    border: 5px solid rgba(0, 0, 0, 0.2);
+    border-top: 5px solid #000;
+    border-bottom: 5px solid #000;
+    border-radius: 50%;
+    animation: loading 0.6s infinite linear;
+}
+
+@keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.edit-entry-btn:hover {
+    opacity: 0.2;
+    cursor: pointer;
+}
+
+.edit-entry-btn i {
+    margin: 0px;
+}
+
+.synopsis {
+    text-align: justify;
+    overflow: hidden;
+    height: 170px;
+    transition: 1s;
+}
+
+.synopsis:hover {
+    height: 100%;
 }

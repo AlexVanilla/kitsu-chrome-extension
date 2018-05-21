@@ -90,7 +90,7 @@ function _searchCallback(input, headers) {
     console.log('input', input);
     return axios.get(`${baseApiUrl}edge/anime?filter[text]=${input}`, headers)
         .then(response => {
-            console.log('got response from search', response);
+            return response.data;
         })
         .catch(onError);
 }
@@ -148,11 +148,13 @@ export function updateProgress(id, payload) {
     })
 }
 
+// NOTE: can't increment or decrement progress consecutively
+// could be from the api to limit number of PATCH requests to url
 function _updateProgressCallback(id, safePayload, headers) {
     return axios.patch(`${baseApiUrl}edge/library-entries/${id}`, safePayload, {
             headers: headers
         })
-        .then(response => response)
+        .then(response => response.data.data.attributes.progress)
         .catch(onError)
 }
 
