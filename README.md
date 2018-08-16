@@ -10,7 +10,7 @@ Prevent the unnecessary keeping a tab open to update your watchlist!
 
 It's hot!  It's neat!  It can't be beat!
 
-Unfortunately, I have to put this on hold to focus on some life stuff going on (aka: getting a job)
+Unfortunately, I have to put this on hold to focus on some life stuff going on
 
 Though I do have a couple roadmap features I want to implement when I find time
 
